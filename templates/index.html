@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terpmate</title>
+</head>
+<body>
+    <h1 style="font-family: 'header-font';">Terpmate</h1>
+    <form action="/filter" method="post">
+        <label for="terpenes">Select Terpenes:</label><br>
+        {% for terpene in terpenes %}
+        <input type="checkbox" name="terpenes" value="{{ terpene }}">{{ terpene }}<br>
+        {% endfor %}
+        <label for="min_concentration">Minimum Concentration (%):</label><br>
+        <input type="number" name="min_concentration" step="0.01" value="0.01"><br>
+        <input type="submit" value="Filter">
+    </form>
+</body>
+</html>

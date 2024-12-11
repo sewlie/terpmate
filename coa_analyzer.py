@@ -4,7 +4,7 @@ import os
 import re
 
 # Path to the folder containing PDFs
-PDF_FOLDER = r"C:\Users\lilma\OneDrive\Documentos\NICO CODE\TERPbot\COAs"
+PDF_FOLDER = r"C:\Users\lilma\OneDrive\Documentos\NICO CODE\TERPbot\terpmate\COAs"
 # Path to the output CSV file
 CSV_FILE = "terpene_data_summary.csv"
 
