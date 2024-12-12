@@ -8,7 +8,61 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow-y: au;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Minimum percentage styling */
+.min-percentage {
+    position: absolute;
+    top: 20px;
+    left: 83px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.min-percentage label {
+    font-family: system-ui;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.min-concentration {
+    width: 80px;
+    padding: 6px 10px 9px 20px;
+    font-size: 24px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 35px;
+    font-family: system-ui;
+    font-weight: bold;
+}
+
+/* GO button styling */
+.go-button-container {
+    position: absolute;
+    top: 20px;
+    right: 80px;
+}
+
+.submit-button {
+    padding: 8px 60px;
+    font-size: 26px;
+    background-color: #469272;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    font-weight: 800;
+    border-radius: 61px;
+    font-family: monospace;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #ffe311df;
+    color: white;
 }
 
 /* Header styles */
@@ -16,7 +70,7 @@ body {
     width: 100%;
     background-color: #000000;
     color: #042940;
-    padding: 20px 0;
+    padding: 23px 0;
     text-align: center;
 }
 
@@ -25,7 +79,6 @@ body {
     font-size: 34px;
     color: white;
     margin: 0;
-    /* text-align: left; */
     padding: 0px 80px 5px;
 }
 
@@ -40,16 +93,10 @@ body {
 
 /* Form container */
 .terpene-form {
-    /* width: 90%; */
-    /* max-height: 80vh; */
-    /* overflow-y: auto; */
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px 80px;
-    /* background-color: #000000; */
-    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
-    /* border-radius: 10px; */
 }
 
 /* Group container */
@@ -75,6 +122,7 @@ body {
 
 .terpene-option {
     display: inline-block;
+    margin: 10px 2px;
     padding: 15px 35px;
     border-radius: 35px;
     color: white;
@@ -89,127 +137,11 @@ body {
 }
 
 .terpene-option:hover {
-    transform: scale(1.02);
-    opacity: 0.9;
+    opacity: 0.85;
+    box-shadow: 0 0 0 2px #ffe3117d;
 }
 
-/* Cart section */
-.cart-section {
-    margin-top: 20px;
-    width: 100%;
-    text-align: center;
-}
-
-.cart-header {
-    font-family: 'header-font', sans-serif;
-    font-size: 20px;
-    color: #4caf50;
-}
-
-.selected-terpenes {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.cart-item {
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-family: 'body-font', sans-serif;
-    font-size: 14px;
-    text-align: center;
-    transition: transform 0.2s ease;
-}
-
-.cart-item:hover {
-    transform: scale(1.1);
-}
-
-/* Input fields */
-.min-concentration {
-    margin: 10px 0;
-    font-family: 'body-font', sans-serif;
-    font-size: 16px;
-    padding: 5px;
-}
-
-/* Submit button */
-.submit-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.submit-button:hover {
-    background-color: #0056b3;
-}
-
-/* Results table styling */
-.results-container {
-    width: 90%;
-    margin: 20px auto;
-}
-
-.result-table {
-    overflow-x: auto;
-    margin-bottom: 20px;
-}
-
-.result-table table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.result-table th, .result-table td {
-    border: 1px solid #ddd;
-    text-align: left;
-    padding: 8px;
-}
-
-.result-table th {
-    background-color: #4caf50;
-    color: white;
-}
-
-/* Back button */
-.back-button {
-    display: inline-block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-family: 'body-font', sans-serif;
-    transition: background-color 0.3s ease;
-}
-
-.back-button:hover {
-    background-color: #388e3c;
-}
-
-.toggle-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.toggle-button:hover {
-    background-color: #0056b3;
+/* Selected terpene style */
+.terpene-option.selected {
+    box-shadow: 0 0 0 3px #ffe311;
 }

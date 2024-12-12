@@ -16,8 +16,8 @@ MOOD_GROUPS = {
 
 GROUP_COLORS = {
     "Energizing": "#097a91", 
-    "Balancing": "#23674a",  
-    "Relaxing": "#4b375d",  
+    "Balancing": "#469272",  
+    "Relaxing": "#9b85af",  
 }
 
 @app.route('/')
