@@ -4,17 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terpmate</title>
+    <link rel="stylesheet" href="/static/css/styles.css"> <!-- Link to external CSS -->
 </head>
 <body>
-    <h1 class="header">Terpmate</h1>
-    <form action="/filter" method="post">
-        <label for="terpenes">Select Terpenes:</label><br>
-        {% for terpene in terpenes %}
-        <input type="checkbox" name="terpenes" value="{{ terpene }}">{{ terpene }}<br>
-        {% endfor %}
-        <label for="min_concentration">Minimum Concentration (%):</label><br>
-        <input type="number" name="min_concentration" step="0.01" value="0.01"><br>
-        <input type="submit" value="Filter">
+    <div class="header-box">
+        <h1 class="header-text" style="font-family: 'header', sans-serif;">Terpmate</h1>
+    </div>
+    <form class="terpene-form" style="font-family: 'header', sans-serif;line-height: 3.5;" action="/filter" method="post">
+        <label for="terpenes" class="form-header">Select Terpenes:</label><br>
+        <div class="terpene-list">
+            {% for terpene in terpenes %}
+            <label style="padding: 10px;border: solid;border-width: 2px;border-color: black;border-radius: 10px;background-color: #9ede9e; margin: 0px 20px;">
+                <input type="checkbox" name="terpenes" value="{{ terpene }}">
+                {{ terpene }}
+            </label>
+            {% endfor %}
+        </div>
+        <label for="min_concentration" class="form-header">Minimum Concentration (%):</label><br>
+        <input type="number" name="min_concentration" step="0.01" value="0.01" class="min-concentration"><br>
+        <input type="submit" value="Filter" class="submit-button">
     </form>
 </body>
 </html>
