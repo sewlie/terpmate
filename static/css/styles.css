@@ -49,14 +49,14 @@ body {
 
 .submit-button {
     padding: 8px 60px;
-    font-size: 26px;
+    font-size: 22px;
     background-color: #469272;
     color: #000000;
     border: none;
     cursor: pointer;
-    font-weight: 800;
+    font-weight: bold;
     border-radius: 61px;
-    font-family: monospace;
+    font-family: system-ui;
     transition: background-color 0.3s ease;
 }
 
