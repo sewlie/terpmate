@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filtered Results</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script>
+        function toggleTables(showFull) {
+            const initialTable = document.getElementById("initial-table");
+            const fullTable = document.getElementById("full-table");
+            if (showFull) {
+                initialTable.style.display = "none";
+                fullTable.style.display = "block";
+            } else {
+                initialTable.style.display = "block";
+                fullTable.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Filtered Results</h1>
-    {% for table in tables %}
-    {{ table|safe }}
-    {% endfor %}
-    <a href="/">Back to Filter</a>
+    <div class="header-box">
+        <h1 class="header-text">Filtered Results</h1>
+    </div>
+    <div class="results-container">
+        <button class="toggle-button" onclick="toggleTables(false)">Show Selected Terpenes</button>
+        <button class="toggle-button" onclick="toggleTables(true)">Show All Data</button>
+        <div id="initial-table">
+            {{ initial_table|safe }}
+        </div>
+        <div id="full-table" style="display: none;">
+            {{ full_table|safe }}
+        </div>
+    </div>
+    <a href="/" class="back-button">Back to Filters</a>
 </body>
 </html>

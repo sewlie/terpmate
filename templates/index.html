@@ -4,26 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terpmate</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
     <div class="header-box">
-        <h1 class="header-text">Terpmate</h1>
-        <p class="header-subtitle">Your one-stop tool for filtering cannabis products by terpenes</p>
+        <h1 class="header-text">terpmate</h1>
     </div>
+    <div class="cart-section">
+        <h2 class="cart-header">Selected Terpenes</h2>
+        <ul id="selected-terpenes" class="selected-terpenes"></ul>
+    </div>
+    <label for="min_concentration" class="form-header">Minimum Concentration (%):</label>
+    <input type="number" name="min_concentration" step="0.01" value="0.01" class="min-concentration">
     <form class="terpene-form" action="/filter" method="post">
-        <label for="terpenes" class="form-header">Select Terpenes:</label>
-        <div class="terpene-list">
-            {% for terpene in terpenes %}
-            <div class="terpene-option" style="background-color: {{ terpene_color(terpene) }};">
-                <input type="checkbox" id="{{ terpene }}" name="terpenes" value="{{ terpene }}">
-                <label for="{{ terpene }}">{{ terpene }}</label>
+        {% for group, terpenes in mood_groups.items() %}
+        <div class="terpene-group">
+            <h2 class="group-header" style="color: white">{{ group }}</h2>
+            <div class="terpene-list">
+                {% for terpene in terpenes %}
+                <label class="terpene-option" for="{{ terpene }}" style="background-color: {{ group_colors[group] }};">
+                    <input type="checkbox" id="{{ terpene }}" name="terpenes" value="{{ terpene }}" onclick="updateCart(this)">
+                    {{ terpene }}
+                </label>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-        <label for="min_concentration" class="form-header">Minimum Concentration (%):</label>
-        <input type="number" name="min_concentration" step="0.01" value="0.01" class="min-concentration">
+        {% endfor %}
+
         <input type="submit" value="Filter" class="submit-button">
     </form>
+    <script src="/static/js/cart.js"></script>
 </body>
 </html>
