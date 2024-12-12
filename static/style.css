@@ -1,0 +1,142 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'body-font', sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Header Styles */
+.header-box {
+    width: 100%;
+    background-color: #4caf50; /* Green */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.header-text {
+    font-family: 'header-font', sans-serif;
+    font-size: 42px;
+    margin: 0;
+}
+
+.header-subtitle {
+    font-family: 'body-font', sans-serif;
+    font-size: 18px;
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* General Label Styling */
+label {
+    font-family: 'body-font', sans-serif;
+    font-size: 16px;
+    color: #333;
+    display: inline-block;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Form Styles */
+.terpene-form {
+    width: 90%;
+    max-height: 70vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.form-header {
+    font-family: 'header-font', sans-serif;
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #4caf50;
+}
+
+/* Terpene List Styles */
+.terpene-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    width: 100%;
+}
+
+.terpene-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+    font-family: 'body-font', sans-serif;
+    font-size: 14px;
+    text-align: center;
+    border: none;
+    width: 25%; /* Adjust for column layout */
+    transition: transform 0.2s ease;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.terpene-option input[type="checkbox"] {
+    display: none; /* Hide the default checkbox */
+}
+
+.terpene-option label {
+    padding: 10px 15px;
+    display: block;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.terpene-option:hover label {
+    background-color: #4caf50;
+    color: white;
+    border-color: #4caf50;
+    transform: scale(1.05);
+}
+
+/* Input Field Styles */
+.min-concentration {
+    padding: 8px;
+    width: 80%;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'body-font', sans-serif;
+}
+
+/* Submit Button Styles */
+.submit-button {
+    padding: 12px 24px;
+    background-color: #4caf50;
+    color: white;
+    font-family: 'header-font', sans-serif;
+    font-size: 16px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
