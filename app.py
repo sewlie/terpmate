@@ -69,10 +69,20 @@ def filter_products():
         filtered_data_initial = pd.DataFrame()  # Empty DataFrame
         filtered_data_full = pd.DataFrame()
 
+    # Add classes for styled table rendering
+    initial_table_html = (
+        filtered_data_initial.to_html(classes="data styled-table", index=False)
+        if not filtered_data_initial.empty else ""
+    )
+    full_table_html = (
+        filtered_data_full.to_html(classes="data styled-table", index=False)
+        if not filtered_data_full.empty else ""
+    )
+
     return render_template(
         'results.html',
-        initial_table=filtered_data_initial.to_html(classes='data', index=False) if not filtered_data_initial.empty else "",
-        full_table=filtered_data_full.to_html(classes='data', index=False) if not filtered_data_full.empty else "",
+        initial_table=initial_table_html,
+        full_table=full_table_html,
         titles=filtered_data.columns.values,
     )
 

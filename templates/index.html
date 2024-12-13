@@ -8,17 +8,17 @@
     <script src="/static/js/cart.js"></script>
 </head>
 <body>
-    <div class="min-percentage">
-        <label for="min_concentration">Min %:</label>
-        <input type="number" name="min_concentration" step="0.01" value="0.01" class="min-concentration">
-    </div>
-    <div class="go-button-container">
-        <input type="submit" value="View" class="submit-button">
-    </div>
     <div class="header-box">
         <h1 class="header-text">Terpmate</h1>
     </div>
     <form class="terpene-form" action="/filter" method="post">
+        <div class="min-percentage">
+            <label for="min_concentration">Min %:</label>
+            <input type="number" name="min_concentration" step="0.01" value="0.01" class="min-concentration">
+        </div>
+        <div class="go-button-container">
+            <input type="submit" value="GO" class="submit-button">
+        </div>
         {% for group, terpenes in mood_groups.items() %}
         <div class="terpene-group">
             <h2 class="group-header" style="color: {{ group_colors[group] }}">{{ group }}</h2>
