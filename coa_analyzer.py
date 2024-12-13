@@ -10,7 +10,10 @@ CSV_FILE = "terpene_data_summary.csv"
 
 # Valid terpene names
 VALID_TERPENES = {
-    "3-Carene", "alpha-Bisabolol", "alpha-Humulene", "alpha-Phellandrene", "alpha-Pinene",
+    "Limonene", "Beta-myrcene", "Linalool", "Beta-caryophyllene", "Alpha-pinene",
+    "Alpha-humulene", "Beta-pinene", "Terpinolene", "Ocimene", "Alpha-bisabolol",
+    "Caryophyllene-oxide", "Geraniol", "Camphene", "Guaiol", "Alpha-terpinene",
+    "Terpineol", "Fenchol", "Valencene", "Alpha-phellandrene", "Farnesene","3-Carene", "alpha-Bisabolol", "alpha-Humulene", "alpha-Phellandrene", "alpha-Pinene",
     "alpha-Terpinene", "alpha-Terpineol", "beta-Myrcene", "beta-Pinene", "Borneol",
     "Camphene", "Camphor", "Caryophyllene oxide", "Cedrene", "Cedrol",
     "cis-Nerolidol", "cis-Ocimene", "Eucalyptol", "Farnesene", "Fenchone",
@@ -20,26 +23,18 @@ VALID_TERPENES = {
     "trans-b-Ocimene", "trans-Caryophyllene", "trans-Nerolidol", "Valencene"
 }
 
-def extract_terpenes_from_phytofarma(text):
-    """
-    Extract terpene information specific to the Phytofarma PDF format.
-    Looks for terpene names, LOQ %, and Results %.
-    """
-    terpene_data = {}
-    for line in text.split("\n"):
-        # Adjusted regex to handle spaces, LOQ, and Results correctly
-        match = re.match(r"([\w\-\+\(\)\s]+)\s+([\d\.eE\-]+)\s+([\d\.]+|<LOQ)", line)
-        if match:
-            terpene_name = match.group(1).strip()
-            result_value = match.group(3).strip()
-
-            if terpene_name in VALID_TERPENES:
-                # Skip "<LOQ" and set result as 0
-                terpene_data[terpene_name] = "0" if result_value == "<LOQ" else result_value
-    return terpene_data
-
 def extract_strain_name(text, pdf_file):
-    """Extract strain name from the PDF text or fallback to file name."""
+    """Extract strain name from PDF text or fallback to file name."""
+    # Extract strain name under "Report #"
+    report_match = re.search(r"Report #\s+(.+)", text)
+    if report_match:
+        return report_match.group(1).strip()
+
+    # Extract strain name to the right of "Sample #"
+    sample_match = re.search(r"Sample #\s+.+\s+(.+)", text)
+    if sample_match:
+        return sample_match.group(1).strip()
+
     # Default to PDF file name if no strain name is found
     return os.path.basename(pdf_file).replace(".pdf", "").strip()
 
@@ -47,6 +42,8 @@ def extract_terpenes_and_total(pdf_path):
     """Extract strain name, terpene concentrations, and total terpene percentage from the provided PDF."""
     strain_name = "Unknown"
     terpene_data = {}
+    total_terpenes = 0.0
+    within_terpene_section = False
 
     with pdfplumber.open(pdf_path) as pdf:
         for page in pdf.pages:
@@ -58,38 +55,64 @@ def extract_terpenes_and_total(pdf_path):
             if strain_name == "Unknown":
                 strain_name = extract_strain_name(text, pdf_path)
 
-            # Extract terpene data from the specific format
-            terpene_data.update(extract_terpenes_from_phytofarma(text))
+            lines = text.split("\n")
+            for line in lines:
+                # Detect the start of the terpene section
+                if "Terpenes by HS-GC-MS" in line:
+                    within_terpene_section = True
+                    continue
 
-    # Filter only valid terpenes
-    filtered_terpene_data = {k: v for k, v in terpene_data.items() if k in VALID_TERPENES}
+                # Process lines within the terpene section
+                if within_terpene_section:
+                    if line.strip() == "" or "Foreign Matter by Microscopy" in line:
+                        within_terpene_section = False
+                        break
 
-    # Calculate total terpene percentage
-    total_terpenes = sum(
-        float(value) for value in filtered_terpene_data.values() if value.replace('.', '', 1).isdigit()
-    )
-    filtered_terpene_data["Total Terpenes (%)"] = f"{total_terpenes:.4f}"
+                    # Preprocess the line to separate numbers from text
+                    line = re.sub(r"(\d)([A-Za-z])", r"\1 \2", line)
 
-    return strain_name, filtered_terpene_data
+                    # Parse terpene data
+                    parts = line.split()
+                    if len(parts) >= 5:  # Ensure sufficient data in the line
+                        terpene_name = parts[1]
+                        concentration = parts[4]  # Correct concentration column
+
+                        # Validate terpene name and concentration value
+                        if terpene_name in VALID_TERPENES:
+                            if concentration.replace('.', '', 1).isdigit():
+                                concentration = f"{float(concentration):.4f}%"
+                                total_terpenes += float(parts[4])
+                            else:
+                                concentration = "0"
+                            terpene_data[terpene_name] = concentration
+
+    return strain_name, f"{total_terpenes:.4f}%", terpene_data
 
 def save_to_csv(rows, all_terpenes, csv_file):
     """Save the extracted data to a CSV file."""
+    existing_strains = set()
+    if os.path.exists(csv_file):
+        with open(csv_file, mode="r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                existing_strains.add(row["Name"])
+
     sorted_terpenes = sorted(all_terpenes)
 
-    with open(csv_file, mode="w", newline="", encoding="utf-8") as file:
+    with open(csv_file, mode="w" if not existing_strains else "a", newline="") as file:
         writer = csv.writer(file)
 
-        # Write the header
-        header = ["Name", "Total Terpenes (%)"] + sorted_terpenes
-        writer.writerow(header)
+        if not existing_strains:
+            header = ["Name", "Total Terpenes (%)"] + sorted_terpenes
+            writer.writerow(header)
 
-        # Write the rows
         for row in rows:
-            aligned_row = [row["Name"], row.get("Total Terpenes (%)", "0")]
-            for terpene in sorted_terpenes:
-                value = row.get(terpene, "0")
-                aligned_row.append(value)
-            writer.writerow(aligned_row)
+            if row["Name"] not in existing_strains:
+                aligned_row = [row["Name"], row["Total Terpenes (%)"]]
+                for terpene in sorted_terpenes:
+                    value = row.get(terpene, "0")
+                    aligned_row.append(value)
+                writer.writerow(aligned_row)
 
 def process_all_pdfs(folder_path):
     """Process all PDFs in the specified folder and save to CSV."""
@@ -99,11 +122,11 @@ def process_all_pdfs(folder_path):
 
     for pdf_file in pdf_files:
         print(f"Processing: {pdf_file}")
-        strain_name, terpene_data = extract_terpenes_and_total(pdf_file)
+        strain_name, total_terpenes, terpene_data = extract_terpenes_and_total(pdf_file)
 
-        all_terpenes.update(terpene_data.keys())
+        all_terpenes.update(name for name in terpene_data.keys() if name in VALID_TERPENES)
 
-        row = {"Name": strain_name}
+        row = {"Name": strain_name, "Total Terpenes (%)": total_terpenes}
         row.update(terpene_data)
         rows.append(row)
 

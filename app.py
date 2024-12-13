@@ -5,7 +5,12 @@ app = Flask(__name__)
 
 # Load the CSV data
 CSV_FILE = "terpene_data_summary.csv"
-data = pd.read_csv(CSV_FILE).replace("ND", "0") if CSV_FILE else pd.DataFrame()
+
+try:
+    data = pd.read_csv(CSV_FILE, on_bad_lines="skip", sep=",").replace("ND", "0") if CSV_FILE else pd.DataFrame()
+except pd.errors.ParserError as e:
+    print(f"Error loading CSV: {e}")
+    data = pd.DataFrame()  # Fallback to empty DataFrame if CSV is malformed
 
 # Group and Color Mapping
 MOOD_GROUPS = {

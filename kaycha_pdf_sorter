@@ -1,0 +1,32 @@
+import pdfplumber
+import os
+import shutil
+
+# Paths
+PDF_FOLDER = r"C:\Users\lilma\OneDrive\Documentos\NICO CODE\TERPbot\terpmate\COAs"
+KAYCHA_FOLDER = os.path.join(PDF_FOLDER, "KAYCHA")
+
+# Create KAYCHA folder if it doesn't exist
+os.makedirs(KAYCHA_FOLDER, exist_ok=True)
+
+def is_kaycha_lab(text):
+    """Check if the PDF belongs to Kaycha Labs based on the text."""
+    return "Matrix" in text
+
+def move_kaycha_pdfs(folder_path, kaycha_folder):
+    """Move PDFs identified as Kaycha Labs to a separate folder."""
+    pdf_files = [os.path.join(folder_path, file) for file in os.listdir(folder_path) if file.endswith(".pdf")]
+    for pdf_file in pdf_files:
+        try:
+            with pdfplumber.open(pdf_file) as pdf:
+                first_page_text = pdf.pages[0].extract_text()
+                if first_page_text and is_kaycha_lab(first_page_text):
+                    print(f"Moving {pdf_file} to KAYCHA folder.")
+                    pdf.close()  # Ensure the file is closed before moving
+                    shutil.move(pdf_file, os.path.join(kaycha_folder, os.path.basename(pdf_file)))
+        except Exception as e:
+            print(f"Error processing {pdf_file}: {e}")
+
+if __name__ == "__main__":
+    move_kaycha_pdfs(PDF_FOLDER, KAYCHA_FOLDER)
+    print("Kaycha Labs PDFs moved successfully.")
